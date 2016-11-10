@@ -1,43 +1,16 @@
 {%- from "ceilometer/map.jinja" import server with context %}
 {%- if server.enabled %}
 
-ceilometer_server_basic_packages:
+ceilometer_server_packages:
   pkg.installed:
   - names: {{ server.basic_pkgs }}
-ceilometer_server_alarm_packages:
-  pkg.installed:
-  - names: {{ server.alarm_pkgs }}
-ceilometer_server_collector_packages:
-  pkg.installed:
-  - names: {{ server.collector_pkgs }}
 
 /etc/ceilometer/ceilometer.conf:
   file.managed:
-  - source: salt://ceilometer/files/{{ server.version }}/ceilometer-server.conf.{{ grains.os_family }}
-  - template: jinja
-  - require:
-    - pkg: ceilometer_server_basic_packages
-
-{%- for publisher_name, publisher in server.get('publisher', {}).iteritems() %}
-
-{%- if publisher_name != "default" %}
-
-ceilometer_publisher_{{ publisher_name }}_pkg:
-  pkg.latest:
-    - name: ceilometer-publisher-{{ publisher_name }}
-
-{%- endif %}
-
-{%- endfor %}
-
-/etc/ceilometer/pipeline.yaml:
-  file.managed:
-  - source: salt://ceilometer/files/{{ server.version }}/pipeline.yaml
-  - template: jinja
-  - require:
-    - pkg: ceilometer_server_packages
-
-{%- if server.version != "kilo" %}
+    - source: salt://ceilometer/files/{{ server.version }}/ceilometer-server.conf.{{ grains.os_family }}
+    - template: jinja
+    - require:
+      - pkg: ceilometer_server_packages
 
 /etc/ceilometer/event_pipeline.yaml:
   file.managed:
@@ -66,11 +39,9 @@ ceilometer_publisher_{{ publisher_name }}_pkg:
   - watch_in:
     - service: ceilometer_server_services
 
-{%- endif %}
-
 ceilometer_server_services:
   service.running:
-  - names: {{ server.services }}
+  - names: {{ server.basic_services }}
   - enable: true
   - watch:
     - file: /etc/ceilometer/ceilometer.conf

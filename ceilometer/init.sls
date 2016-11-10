@@ -1,8 +1,8 @@
 
 include:
 {% if pillar.ceilometer.agent is defined %}
-- ceilometer.agent
+- ceilometer.agent_mitaka
 {% endif %}
 {% if pillar.ceilometer.server is defined %}
-- ceilometer.server
+- ceilometer.server_mitaka
 {% endif %}
