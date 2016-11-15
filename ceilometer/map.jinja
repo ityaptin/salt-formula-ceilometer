@@ -1,7 +1,7 @@
 
 {% set server = salt['grains.filter_by']({
     'Debian': {
-        'basic_pkgs': ['ceilometer-api', 'ceilometer-agent-central',  'python-ceilometerclient','ceilometer-agent-notification'],
+        'basic_pkgs': ['ceilometer-api', 'ceilometer-agent-central', 'python-ceilometerclient', 'ceilometer-agent-notification', 'python-elasticsearch'],
         'alarm_pkgs': ['ceilometer-alarm-evaluator', 'ceilometer-alarm-notifier'],
         'collector_pkgs': ['ceilometer-collector'],
         'alarm_services': ['ceilometer-alarm-evaluator','ceilometer-alarm-notifier'],

@@ -12,6 +12,17 @@ parameters:
       ttl: 86400
       publisher:
         default:
+      database:
+        influxdb:
+          user: ${_param:ceilometer_influxdb_user}
+          password: ${_param:ceilometer_influxdb_password}
+          dbname: ${_param:ceilometer_influxdb_database}
+          host: ${_param:ceilometer_influxdb_host}
+          port: ${_param:ceilometer_influxdb_port}
+        elasticsearch:
+          host: ${_param:ceilometer_elasticsearch_host}
+          port: ${_param:ceilometer_elasticsearch_port}
+          enable: ${_param:ceilometer_elasticsearch_enable}
       bind:
         host: ${_param:cluster_local_address}
         port: 8777
