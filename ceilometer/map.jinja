@@ -1,30 +1,26 @@
 
 {% set server = salt['grains.filter_by']({
     'Debian': {
-        'basic_pkgs': ['ceilometer-api', 'ceilometer-agent-central', 'python-ceilometerclient', 'ceilometer-agent-notification', 'python-elasticsearch'],
-        'alarm_pkgs': ['ceilometer-alarm-evaluator', 'ceilometer-alarm-notifier'],
-        'collector_pkgs': ['ceilometer-collector'],
-        'alarm_services': ['ceilometer-alarm-evaluator','ceilometer-alarm-notifier'],
-        'collector_services': ['ceilometer-collector'],
-        'basic_services': ['ceilometer-api','ceilometer-agent-central','ceilometer-agent-notification'],
+        'mitaka_pkgs': ['ceilometer-api', 'ceilometer-agent-central', 'python-ceilometerclient', 'ceilometer-agent-notification', 'python-elasticsearch'],
+        'all_packages': ['ceilometer-alarm-evaluator', 'ceilometer-alarm-notifier', ceilometer-api', 'ceilometer-agent-central', 'ceilometer-collector'],
+        'all_services': ['ceilometer-alarm-evaluator', 'ceilometer-alarm-notifier', ceilometer-api', 'ceilometer-agent-central', 'ceilometer-collector'],
+        'mitaka_services': ['ceilometer-api','ceilometer-agent-central','ceilometer-agent-notification'],
     },
     'RedHat': {
-        'basic_pkgs':[ 'openstack-ceilometer-api', 'openstack-ceilometer-central', 'python-ceilometerclient'],
-        'alarm_pkgs':['openstack-ceilometer-alarm'],
-        'collector_pkgs':['openstack-ceilometer-collector',],
-        'basic_services':['openstack-ceilometer-api'],
-        'collector_services':['openstack-ceilometer-collector'],
-        'alarm_services': ['openstack-ceilometer-alarm-evaluator']
+        'mitaka_pkgs':[ 'openstack-ceilometer-api', 'openstack-ceilometer-central', 'python-ceilometerclient'],
+        'all_pkgs':[ 'openstack-ceilometer-api', 'openstack-ceilometer-central', 'python-ceilometerclient', 'openstack-ceilometer-alarm', 'openstack-ceilometer-collector'],
+        'all_services':['openstack-ceilometer-api', 'openstack-ceilometer-central', 'openstack-ceilometer-collector', 'openstack-ceilometer-alarm-evaluator', 'openstack-ceilometer-notification'],
+        'mitaka_services':['openstack-ceilometer-api', 'openstack-ceilometer-central', 'openstack-ceilometer-notification'],
     },
 }, merge=salt['pillar.get']('ceilometer:server')) %}
 
 {% set agent = salt['grains.filter_by']({
     'Debian': {
-        'basic_pkgs': ['ceilometer-agent-compute'],
-        'basic_services': ['ceilometer-agent-compute'],
+        'pkgs': ['ceilometer-agent-compute'],
+        'services': ['ceilometer-agent-compute'],
     },
     'RedHat': {
-        'basic_pkgs': ['openstack-ceilometer-compute'],
-        'basic_services': ['openstack-ceilometer-compute'],
+        'pkgs': ['openstack-ceilometer-compute'],
+        'services': ['openstack-ceilometer-compute'],
     },
 }, merge=salt['pillar.get']('ceilometer:agent')) %}
